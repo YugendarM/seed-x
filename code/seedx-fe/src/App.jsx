@@ -1,10 +1,16 @@
 import React from 'react'
+import NavbarComponent from './components/NavbarComponent'
+import RouterComponent from './components/RouterComponent'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 const App = () => {
   return (
-    <div className='text-2xl text-red-400 bg-blue-300'>
-      This is app
-    </div>
+   <React.Fragment>
+    <Router>
+      <NavbarComponent/>
+      <RouterComponent/>
+    </Router>
+   </React.Fragment>
   )
 }
 
