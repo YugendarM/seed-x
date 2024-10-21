@@ -15,7 +15,7 @@ const NavbarComponent = () => {
 
   useEffect(() => {
     const sessionToken = Cookies.get('SessionID');
-    if (!sessionToken) {
+    if (sessionToken) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
