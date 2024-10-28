@@ -25,7 +25,7 @@ const NavbarComponent = () => {
   }, [pathname]);  
 
   return (
-    <div className={`z-30 w-full flex px-5 md:px-20 lg:px-56 py-4 items-center justify-between ${pathname === "/" ? "shadow-none" : "shadow-lg"}`}>
+    <div className={` bg-white fixed top-0 z-30 w-full flex px-5 md:px-10 lg:px-56 py-4 items-center justify-between ${pathname === "/" || pathname.includes('login') || pathname.includes('signup') ? "shadow-none" : "shadow-lg"}`}>
       <div className='flex items-center gap-10 w-[50%]'>
         <LinkComponent to={"/"}>
           {/* <img src={logo} className='h-10 w-10'/> */}

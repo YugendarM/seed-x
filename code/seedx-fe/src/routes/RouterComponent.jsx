@@ -11,7 +11,8 @@ const ProfilePage = lazy(() => import('../pages/ProfilePage'))
 
 const RouterComponent = () => {
   return (
-    <Suspense fallback={<PageLoadingComponent/>}>
+    <div className='pt-20'>
+      <Suspense fallback={<PageLoadingComponent/>}  >
       <Routes>
         <Route exact path='/' element={<HomePage/>}/>
         <Route path='/login' element={<LoginPage/>}/>
@@ -21,6 +22,7 @@ const RouterComponent = () => {
         <Route path='/*' element={<ErrorPage/>}/>
       </Routes>
     </Suspense>
+    </div>
   )
 }
 
