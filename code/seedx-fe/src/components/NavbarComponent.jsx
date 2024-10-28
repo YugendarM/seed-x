@@ -8,21 +8,13 @@ import { RiSeedlingFill } from 'react-icons/ri';
 import { FaChevronDown } from 'react-icons/fa';
 import InputComponent from '../elements/InputComponent';
 import LinkComponent from '../elements/LinkComponent';
+import useUserContext from '../hooks/useUserContext';
 
 const NavbarComponent = () => {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const {isUserLoggedIn, userProfile} = useUserContext()
 
   const {pathname} = useLocation()
-
-  useEffect(() => {
-    const sessionToken = Cookies.get('SessionID');
-    if (sessionToken) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [pathname]);  
 
   return (
     <div className={` bg-white fixed top-0 z-30 w-full flex px-5 md:px-10 lg:px-56 py-4 items-center justify-between ${pathname === "/" || pathname.includes('login') || pathname.includes('signup') ? "shadow-none" : "shadow-lg"}`}>
@@ -44,10 +36,10 @@ const NavbarComponent = () => {
           <LinkComponent to={"/"} className={`text-lg font-medium py-2 transition ${pathname === "/" ? "text-seedxTextGreen " : "text-gray-800 border-none"}`}>Home</LinkComponent>
           <LinkComponent to={"/products"} className={`text-lg font-medium py-2 transition flex items-center gap-1 ${pathname.includes("/products") ? "text-seedxTextGreen " : "text-gray-800 border-none"}`}>Products <FaChevronDown className='text-inherit text-xs' /></LinkComponent>
           {
-            isLoggedIn ? 
+            isUserLoggedIn ? 
             <>
               <LinkComponent to={"/viewcart"} className={`text-lg font-medium py-2 transition flex items-center gap-1 ${pathname.includes("/viewcart") ? "text-seedxTextGreen " : "text-gray-800 border-none"}`}><TiShoppingCart className='text-inherit text-2xl'/>Cart</LinkComponent>
-              <LinkComponent to={"/profile"} className={`text-lg font-medium py-2 transition flex items-center gap-1 ${pathname.includes("/profile") ? "text-seedxTextGreen " : "text-gray-800 border-none"}`}>Yugendar <img className='h-8 w-8' src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png'/></LinkComponent>
+              <LinkComponent to={"/profile"} className={`text-lg font-medium py-2 transition flex items-center gap-1 capitalize ${pathname.includes("/profile") ? "text-seedxTextGreen " : "text-gray-800 border-none "}`}>{userProfile?.firstName}<img className='h-8 w-8' src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png'/></LinkComponent>
             </>
             :
             <>

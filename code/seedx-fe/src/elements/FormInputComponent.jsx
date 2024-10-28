@@ -38,9 +38,9 @@ const FormInputComponent = ({
             />
             {
                 type === 'password' &&
-                <ButtonComponent>
+                <ButtonComponent type='button' onClick={handlePasswordVisibility}  className='text-2xl cursor-pointer mr-3'>
                     {
-                        isPasswordVisible? <BiHide onClick={handlePasswordVisibility} className='text-2xl cursor-pointer mr-3'/> : <BiShow onClick={handlePasswordVisibility} className='text-2xl cursor-pointer mr-3'/>
+                        isPasswordVisible? <BiHide/> : <BiShow/>
                     }
                 </ButtonComponent>
             }

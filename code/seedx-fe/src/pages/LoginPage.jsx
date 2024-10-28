@@ -4,6 +4,10 @@ import { RiSeedlingFill } from 'react-icons/ri'
 import ButtonComponent from '../elements/ButtonComponent'
 import LinkComponent from '../elements/LinkComponent'
 import FormInputComponent from '../elements/FormInputComponent'
+import authService from '../api/authService'
+import useUserContext from '../hooks/useUserContext'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const LoginPage = () => {
 
@@ -11,10 +15,43 @@ const LoginPage = () => {
     email: "",
     password: ""
   })
+  const [isLoginLoading, setIsLoginLoading] = useState(false)
 
-  const handleLogin = (event) => {
+  const {setIsUserLoggedIn, setUserProfile} = useUserContext()
+  const navigate = useNavigate()
+
+  const handleLogin = async(event) => {
     event.preventDefault()
-    console.log(userCredentials)
+    setIsLoginLoading(true)
+
+    try{
+      const response = await authService.login(userCredentials)
+      setIsUserLoggedIn(true)
+      setUserProfile(response?.data?.userData)
+      navigate("/")
+      toast.success("Logged in successfully")
+    }
+    catch (error) {
+      if (error.response) {
+          const status = error.response.status;
+          const message = error.response.data?.message || "An error occurred";
+
+          if (status === 401) {
+              toast.error(message || "Unauthorized access");
+          } else if (status === 500) {
+              toast.error(message || "Server error, please try again later");
+          } else {
+              toast.error(`Error ${status}: ${message}`);
+          }
+      } else if (error.request) {
+          toast.error("Network error. Please check your connection and try again.");
+      } else {
+          toast.error("Unexpected error occurred. Please try again later.");
+      }
+    } 
+    finally{
+      setIsLoginLoading(false)
+    }
   }
 
   const handleOnChange = (event) => {
@@ -36,7 +73,14 @@ const LoginPage = () => {
             <FormInputComponent required label={"Email Address"} name={'email'} type='email' onChange={handleOnChange} value={userCredentials.email} />
             <FormInputComponent required label={"Password"} type='password' name={'password'} onChange={handleOnChange} value={userCredentials?.password} />
           <div className='w-full my-5'>
-            <ButtonComponent type='submit' className='w-full bg-seedxPrimaryGreen border border-seedxPrimaryGreen  text-white py-2 rounded-sm hover:bg-white hover:text-seedxPrimaryGreen hover:border-seedxPrimaryGreen transition'>Login</ButtonComponent>
+            <ButtonComponent 
+              type='submit' 
+              className='group w-full flex justify-center bg-seedxPrimaryGreen border border-seedxPrimaryGreen  text-white py-2 rounded-sm hover:bg-white hover:text-seedxPrimaryGreen hover:border-seedxPrimaryGreen transition'
+            >
+              {
+                isLoginLoading ? <div className='h-6 w-6 border-2 group-hover:border-seedxPrimaryGreen group-hover:border-t-gray-300 border-white border-t-gray-300 rounded-full animate-spin'></div> : "Login"
+              }
+            </ButtonComponent>
             <p className='text-sm text-center flex justify-center items-center gap-2'>Don't have an account?
               <LinkComponent to={"/signup"} className='text-seedxPrimaryGreen underline'>Signup</LinkComponent>
             </p>
