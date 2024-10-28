@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
+import ButtonComponent from '../elements/ButtonComponent';
 
 const CartPage = () => {
 
@@ -84,14 +85,14 @@ const CartPage = () => {
                   <div className='flex flex-col justify-between items-end  px-10 py-5'>
                     
                     {item.bestSeller && <p className=' text-xs rounded-full px-4 py-1 bg-seedxBgGreen '>BestSeller</p> }
-                    <button className=' text-seedxPrimaryGreen font-medium'>REMOVE</button>
+                    <ButtonComponent className=' text-seedxPrimaryGreen font-medium'>REMOVE</ButtonComponent>
                   </div>
                 </div>
                 <p className='w-[10%] text-center'>{formatRupees(item.price)}/kg</p>
                 <p className='w-[20%] text-center flex gap-3 justify-center items-center'>
-                  <button><CiCircleMinus  className='text-2xl'/></button>
+                  <ButtonComponent><CiCircleMinus  className='text-2xl'/></ButtonComponent>
                   {item.quantity} kg
-                  <button><CiCirclePlus className='text-2xl'/></button>
+                  <ButtonComponent><CiCirclePlus className='text-2xl'/></ButtonComponent>
                 </p>
                 <p className='w-[10%] text-center'>{formatRupees(item.totalAmount)}</p>
               </div>
@@ -103,7 +104,7 @@ const CartPage = () => {
 
       <div className='bg-white z-30 fixed bottom-0 py-6 shadow-custom-medium w-full flex flex-col gap-4 items-end px-5 md:px-20 lg:px-56'>
         <h2 className='text-xl font-medium flex gap-3 items-end'>Sub total:<span className='font-semibold text-3xl'>{formatRupees(2706)}</span></h2>
-        <button className='bg-seedxPrimaryGreen text-white py-2 px-12 rounded-sm'>Checkout</button>
+        <ButtonComponent className='bg-seedxPrimaryGreen text-white py-2 px-12 rounded-sm'>Checkout</ButtonComponent>
       </div>
     </React.Fragment>
   )

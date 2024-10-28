@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import lander from "../assets/lander-bg-1.png"
-import { Link } from 'react-router-dom'
 import { FaArrowRight } from 'react-icons/fa'
+import LinkComponent from '../elements/LinkComponent'
 
 const HomePage = () => {
 
@@ -46,12 +46,12 @@ const HomePage = () => {
   ]) 
   return (
     <React.Fragment>
-      <div className='w-full relative'>
-        <img src={lander} className='w-full'/>
+      <div className='w-full relative min-h-[60vh]'>
+        <img alt='hero-section-background' src={lander} className='w-full '/>
         <div className='absolute top-32 px-5 md:px-20 lg:px-56 z-20 flex flex-col gap-4 '>
           <h1 className='text-6xl font-bold max-w-[600px] '>Where Fair Prices Meet Fresh Produce</h1>
           <p className='text-2xl font-light'>Your One-Stop Marketplace for Fresh Farm Goods</p>
-          <Link className='flex items-center gap-3 text-xl font-medium text-white bg-seedxPrimaryGreen w-40 justify-center rounded-full py-2 hover:bg-white hover:text-seedxPrimaryGreen transition'>Explore <FaArrowRight className='text-lg'/></Link>
+          <LinkComponent className='flex items-center gap-3 text-xl font-medium text-white bg-seedxPrimaryGreen w-40 justify-center rounded-full py-2 hover:bg-white hover:text-seedxPrimaryGreen transition'>Explore <FaArrowRight className='text-lg'/></LinkComponent>
         </div>
       </div>
 
