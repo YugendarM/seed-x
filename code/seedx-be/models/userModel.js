@@ -117,7 +117,7 @@ const userSchema = new mongoose.Schema({
     cart: [{
         product:{
             type:  mongoose.Schema.Types.ObjectId,  //change this to production reference
-            ref: "user"
+            ref: "product"
         },
         producer: {
             type: mongoose.Schema.Types.ObjectId,
