@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import PageLoadingComponent from '../loaders/PageLoadingComponent'
+import ProductsPage from '../pages/ProductsPage'
 
 const HomePage = lazy(() => import('../pages/HomePage'))
 const LoginPage = lazy(() => import('../pages/LoginPage'))
@@ -19,6 +20,7 @@ const RouterComponent = () => {
         <Route path='/signup' element={<SignupPage/>}/>
         <Route path='/viewcart' element={<CartPage/>}/>
         <Route path='/profile' element={<ProfilePage/>}/>
+        <Route path='/products' element={<ProductsPage/>}/>
         <Route path='/*' element={<ErrorPage/>}/>
       </Routes>
     </Suspense>
