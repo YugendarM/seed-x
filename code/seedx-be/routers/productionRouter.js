@@ -1,14 +1,22 @@
 const express = require("express")
-const {addProduction, getAllProductions, getProductionDataById, updateProduction, deleteProduction} = require("../controllers/productionController")
+const {addProduction, getAllProductions, getProductionDataById, updateProduction, deleteProduction, getProductionsByCategory, getAllProducers, getProducersByCategory} = require("../controllers/productionController")
 const { authenticate } = require("../middlewares/authenticate")
+const multer = require('multer')
 
 const route = express.Router()
+
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
 
 const attachSocketIO = (io) => {
 
     route.get("/", getAllProductions)
+    route.get("/producer", getAllProducers)
+    route.get("/:productionId", getProductionDataById)
+    route.get("/category/:category", getProductionsByCategory)
+    route.get("/producer/category/:category", getProducersByCategory)
 
-    route.post("/add", authenticate, (request, response) => addProduction(request, response, io))
+    route.post("/add", authenticate, upload.array("images", 12), (request, response) => addProduction(request, response, io))
 
     route.put("/update/:productionId", authenticate, (request, response) => updateProduction(request, response, io))
 

@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 3500
 const authRouter = require("./routers/authRouter")
 const productRouter = require("./routers/productRouter")
 const productionRouter = require("./routers/productionRouter")
+const searchRouter = require("./routers/searchRouter")
 
 app.use(cors({
     origin: process.env.FE_BASE_URL, 
@@ -36,6 +37,7 @@ const attachedProductionRoute = productionRouter(io)
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/product", attachedProductRoute)
 app.use("/api/v1/production", attachedProductionRoute)
+app.use("/api/v1/search", searchRouter)
 
 io.on("connection", (socket) => {
     console.log("New client connected", socket.id)

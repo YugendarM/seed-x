@@ -10,9 +10,13 @@ const productSchema = new mongoose.Schema({
         required: [true, "Product Name is mandatory"],
         enum: ["fruits", "vegetables", "pulses", "cereals", "spices", "nuts"]
     },
-    image: {
+    bestSeller: {
+        type: Boolean,
+        default: false
+    },
+    images: [{
         type: String
-    }
+    }]
 }, {
     collection: "product",
     timestamps: true

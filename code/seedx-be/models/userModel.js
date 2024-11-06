@@ -59,9 +59,9 @@ const userSchema = new mongoose.Schema({
         max: 25,
         select: false
     },
-    profile: {
+    profilePicture: [{
         type: String,
-    },
+    }],
     city: {
         type: String,
     },
@@ -94,9 +94,16 @@ const userSchema = new mongoose.Schema({
     age: {
         type: Number,
     },
+    experience: {
+        type: Number
+    },
     isProducer: {
         type: Boolean,
         default: false
+    },
+    farmSize: {
+        type: Number,
+        required: [true, 'Farm size is required']
     },
     rating: {
         type: Number,
@@ -110,14 +117,30 @@ const userSchema = new mongoose.Schema({
         comment: {type: String},
         rating: {type: Number}
     }],
-    proofDocuments: {
-        
+    orders: {
+        type: Number,
+        default: 0
     },
+    proofDocuments: [{
+        documentName: {
+            type: String,
+        },
+        documentType: {
+            type: String
+        },
+        sector: {
+            type: String,
+            enum: ["private", "government", "others"]
+        }
+    }],
+    fieldImages: [{
+        type: String
+    }],
     favourites: [favouriteSchema],
     cart: [{
         product:{
-            type:  mongoose.Schema.Types.ObjectId,  //change this to production reference
-            ref: "product"
+            type:  mongoose.Schema.Types.ObjectId,  //changed this to production reference
+            ref: "production"
         },
         producer: {
             type: mongoose.Schema.Types.ObjectId,
