@@ -7,7 +7,7 @@ import ListComponent from '../elements/ListComponent'
 import ProductCard from '../components/cards/ProductCard'
 import ProducerCard from '../components/cards/ProducerCard'
 import ProductsLoadingComponent from '../loaders/ProductsLoadingComponent'
-import ProducerLoadingComponent from '../loaders/producerLoadingComponent'
+import ProducerLoadingComponent from '../loaders/ProducerLoadingComponent'
 import searchService from '../api/searchService'
 import { getSocket, initiateSocketConnection } from '../utils/socketService'
 
