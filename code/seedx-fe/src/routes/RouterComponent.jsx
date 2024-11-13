@@ -8,7 +8,7 @@ const LoginPage = lazy(() => import('../pages/LoginPage'))
 const SignupPage = lazy(() => import('../pages/SignupPage'))
 const ErrorPage = lazy(() => import('../pages/ErrorPage'))
 const CartPage = lazy(() => import('../pages/CartPage'))
-const ProfilePage = lazy(() => import('../pages/ProfilePage'))
+const AccountPage = lazy(() => import('../pages/AccountPage'))
 
 const RouterComponent = () => {
   return (
@@ -19,7 +19,7 @@ const RouterComponent = () => {
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/signup' element={<SignupPage/>}/>
         <Route path='/viewcart' element={<CartPage/>}/>
-        <Route path='/profile' element={<ProfilePage/>}/>
+        <Route path='/account/*' element={<AccountPage/>}/>
         <Route path='/products' element={<ProductsPage/>}/>
         <Route path='/*' element={<ErrorPage/>}/>
       </Routes>

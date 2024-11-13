@@ -150,7 +150,7 @@ const NavbarComponent = () => {
             isUserLoggedIn ? 
             <>
               <LinkComponent to={"/viewcart"} className={`text-lg font-medium py-2 transition flex items-center gap-1 ${pathname.includes("/viewcart") ? "text-seedxTextGreen " : "text-gray-800 border-none"}`}><TiShoppingCart className='text-inherit text-2xl'/>Cart</LinkComponent>
-              <LinkComponent to={"/profile"} className={`text-lg font-medium py-2 transition flex items-center gap-1 capitalize ${pathname.includes("/profile") ? "text-seedxTextGreen " : "text-gray-800 border-none "}`}>{userProfile?.firstName}<img className='h-8 w-8' src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png'/></LinkComponent>
+              <LinkComponent to={"/account"} className={`text-lg font-medium py-2 transition flex items-center gap-1 capitalize ${pathname.includes("/profile") ? "text-seedxTextGreen " : "text-gray-800 border-none "}`}>{userProfile?.firstName}<img className='h-8 w-8' src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png'/></LinkComponent>
             </>
             :
             <>

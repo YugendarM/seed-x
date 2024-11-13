@@ -4,4 +4,18 @@
 
 *{
     font-family: "Quicksand", sans-serif;
+    scrollbar-width: none;
+}
+  
+*::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Edge */
+  }
+
+::selection{
+    background-color: #15B392;
+    color: #fff
+}
+
+img, button, Link {
+    user-select: none;
 }
