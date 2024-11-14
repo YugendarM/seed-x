@@ -15,6 +15,10 @@ const productionSchema = new mongoose.Schema({
         ref: 'user',
         required: [true, "Producer is required"]
     },
+    isActive: {
+        type: Boolean,
+        default: true
+    },
     availableWithin: {
         type: Number,
         required: [true, "AvailableWithin no. of days is required"]

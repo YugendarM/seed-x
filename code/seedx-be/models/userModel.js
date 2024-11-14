@@ -101,6 +101,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    isVerifiedProducer: {
+        type: Boolean,
+        default: false
+    },
     farmSize: {
         type: Number,
         required: [true, 'Farm size is required']

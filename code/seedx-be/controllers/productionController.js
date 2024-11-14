@@ -311,9 +311,211 @@ const getProducersByCategory = async(request, response) => {
     } catch (error) {
         return response.status(500).json({ status: "failure", code: 500, message: error.message }) 
     }
-
-
 }
 
-module.exports = {addProduction, getAllProductions, getProductionDataById, updateProduction, deleteProduction, getProductionsByCategory, getAllProducers, getProducersByCategory}
+const getProducersByProduct = async(request, response) => {
+    const { productId } = request.params 
+    console.log("productId")
+    console.log(productId)
+
+    try {
+        const uniqueProducers = await productionModel.aggregate([
+            // Lookup to join with the product collection
+            {
+                $lookup: {
+                    from: 'product', 
+                    localField: 'product', 
+                    foreignField: '_id', 
+                    as: 'productDetails'
+                }
+            },
+            { 
+                $unwind: '$productDetails' 
+            },
+            {
+                $match: {
+                    'productDetails._id': new mongoose.Types.ObjectId(productId)
+                }
+            },
+            // Lookup to join with the producer collection
+            {
+                $lookup: {
+                    from: 'user', 
+                    localField: 'producer', 
+                    foreignField: '_id', 
+                    as: 'producerDetails'
+                }
+            },
+            {
+                $unwind: '$producerDetails'
+            },
+            // Group by producer ID to ensure unique producers and collect all matching products
+            {
+                $group: {
+                    _id: '$producerDetails._id',
+                    producer: { $first: '$producerDetails' },
+                }
+            },
+            {
+                $project: {
+                    'producer.role': 0,
+                    'producer.password': 0,
+                    'producer.favourites': 0,
+                    'producer.cart': 0,
+                    'producer.createdAt': 0,
+                    'producer.updatedAt': 0,
+                    'producer.__v': 0
+                }
+            }
+        ]) 
+
+        const producersWithImageUrls = await Promise.all(uniqueProducers.map(async (entry) => {
+            const producer = entry.producer 
+            const producerWithUrls = { ...producer, products: entry.products } 
+            if (producer.profilePicture && producer.profilePicture.length > 0) {
+                producerWithUrls.profilePictureUrls = await getFileUrls(producer.profilePicture) 
+            }
+            return producerWithUrls 
+        })) 
+
+        console.log(producersWithImageUrls)
+
+        return response.status(200).send({ status: "success", code: 200, producersData: producersWithImageUrls }) 
+    } catch (error) {
+        return response.status(500).json({ status: "failure", code: 500, message: error.message }) 
+    }
+}
+
+const getProducerById = async (request, response) => {
+    const { producerId } = request.params;
+
+    try {
+        const producerData = await productionModel.aggregate([
+            {
+                $match: {
+                    producer: new mongoose.Types.ObjectId(producerId)
+                }
+            },
+            {
+                $lookup: {
+                    from: 'product',
+                    localField: 'product',
+                    foreignField: '_id',
+                    as: 'productDetails'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'user',
+                    localField: 'producer',
+                    foreignField: '_id',
+                    as: 'producerDetails'
+                }
+            },
+            {
+                $unwind: '$producerDetails'
+            },
+            // Group by producer ID and collect all products
+            {
+                $group: {
+                    _id: '$producerDetails._id',
+                    producer: { $first: '$producerDetails' },
+                    products: {
+                        $push: {
+                            $map: {
+                                input: '$productDetails',
+                                as: 'product',
+                                in: {
+                                    _id: '$$product._id',
+                                    name: '$$product.name',
+                                    category: '$$product.category',
+                                    bestSeller: '$$product.bestSeller'
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            // Flatten the products array to remove nested arrays
+            {
+                $project: {
+                    producer: 1,
+                    products: {
+                        $reduce: {
+                            input: '$products',
+                            initialValue: [],
+                            in: { $concatArrays: ['$$value', '$$this'] }
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    'producer.role': 0,
+                    'producer.password': 0,
+                    'producer.favourites': 0,
+                    'producer.cart': 0,
+                    'producer.createdAt': 0,
+                    'producer.updatedAt': 0,
+                    'producer.__v': 0
+                }
+            }
+        ]);
+
+        if (!producerData.length) {
+            return response.status(404).json({ status: "failure", code: 404, message: "Producer not found" });
+        }
+
+        const producerWithUrls = await Promise.all(producerData.map(async (entry) => {
+            const producer = entry.producer;
+        
+            const producerWithDetails = { ...producer, products: entry.products };
+        
+            if (producer.profilePicture && producer.profilePicture.length > 0) {
+                producerWithDetails.profilePictureUrls = await getFileUrls(producer.profilePicture);
+            }
+        
+            if (producer.fieldImages && producer.fieldImages.length > 0) {
+                producerWithDetails.fieldImageUrls = await getFileUrls(producer.fieldImages);
+            }
+        
+            return producerWithDetails;
+        }));
+
+        return response.status(200).send({ status: "success", code: 200, producerData: producerWithUrls[0] });
+    } catch (error) {
+        return response.status(500).json({ status: "failure", code: 500, message: error.message });
+    }
+};
+
+const getProductionsByProducer = async(request, response) => {
+    const {producerId} = request.params
+    try{
+        const productionsData = await productionModel.find({producer: producerId}).populate("product")
+        if(productionsData.length <= 0){
+            return response.status(404).json({status: "not found", code: 404, message: "No productions found"})
+        }
+
+        const productionsWithImageUrls = await Promise.all(productionsData.map((async (production) => {
+            const productionWithUrls = production.toObject()
+            if(production.product.images && production.product.images.length > 0){
+                productionWithUrls.product.imageUrls = await getFileUrls(production.product.images)
+            }
+            if(production.images && production.images.length > 0){
+                productionWithUrls.imageUrls = await getFileUrls(production.images)
+            }
+            return productionWithUrls
+        })))
+
+        return response.status(200).json({status: "success", code: 200, productionsData: productionsWithImageUrls})
+    }
+    catch (error) {
+        return response.status(500).json({ status: "failure", code: 500, message: error.message });
+    }
+}
+
+
+
+
+module.exports = {addProduction, getAllProductions, getProductionDataById, updateProduction, deleteProduction, getProductionsByCategory, getAllProducers, getProducersByCategory, getProducersByProduct, getProducerById, getProductionsByProducer}
 

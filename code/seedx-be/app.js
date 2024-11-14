@@ -16,6 +16,7 @@ const authRouter = require("./routers/authRouter")
 const productRouter = require("./routers/productRouter")
 const productionRouter = require("./routers/productionRouter")
 const searchRouter = require("./routers/searchRouter")
+const userRouter = require("./routers/userRouter")
 
 app.use(cors({
     origin: process.env.FE_BASE_URL, 
@@ -38,6 +39,7 @@ app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/product", attachedProductRoute)
 app.use("/api/v1/production", attachedProductionRoute)
 app.use("/api/v1/search", searchRouter)
+app.use("/api/v1/user", userRouter)
 
 io.on("connection", (socket) => {
     console.log("New client connected", socket.id)
