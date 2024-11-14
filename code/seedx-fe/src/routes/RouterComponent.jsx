@@ -2,6 +2,8 @@ import React, { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import PageLoadingComponent from '../loaders/PageLoadingComponent'
 import ProductsPage from '../pages/ProductsPage'
+import ProductOverviewPage from '../pages/ProductOverviewPage'
+import ProducerOverviewPage from '../pages/ProducerOverviewPage'
 
 const HomePage = lazy(() => import('../pages/HomePage'))
 const LoginPage = lazy(() => import('../pages/LoginPage'))
@@ -21,6 +23,8 @@ const RouterComponent = () => {
         <Route path='/viewcart' element={<CartPage/>}/>
         <Route path='/account/*' element={<AccountPage/>}/>
         <Route path='/products' element={<ProductsPage/>}/>
+        <Route path='/products/:productName/:productId' element={<ProductOverviewPage/>}/>
+        <Route path='/producer/:producerName/:producerId/*' element={<ProducerOverviewPage/>}/>
         <Route path='/*' element={<ErrorPage/>}/>
       </Routes>
     </Suspense>

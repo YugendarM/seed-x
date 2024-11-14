@@ -1,18 +1,18 @@
 import React from 'react'
 import LinkComponent from "../../elements/LinkComponent"
-import ListComponent from '../../elements/ListComponent'
 import { FaStar } from 'react-icons/fa'
+import defaultProfile from "../../assets/default_profile.png"
 
 const ProducerCard = ({producer}) => {
   return (
-    <LinkComponent to={"/products"} className='border-b border-b-gray-300 flex gap-6 hover:shadow-md transition'>
+    <LinkComponent to={`/producer/${producer.firstName}_${producer.lastName}/${producer._id}`} className='border-b border-b-gray-300 flex gap-6 hover:shadow-md transition'>
       <div className='py-3 w-[10%] flex justify-center'>
         {
           producer.image 
           ?
-            <img className='rounded-full h-24 w-24 object-cover' src={product.imageUrls}/>
+            <img className='rounded-full h-24 w-24 object-cover' alt={`${producer.firstName}_${producer.lastName}_profile`} src={producer.imageUrls[0]}/>
           :
-            <img className='rounded-full h-24 w-24 object-cover' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&s'/>
+            <img className='rounded-full h-24 w-24 object-cover' alt="default profile" src={defaultProfile}/>
         }
       </div>
 

@@ -21,10 +21,26 @@ const productionService = {
         return response
     },
 
+    getProducersByProduct : async(productId) => {
+        const response = await axiosInstance.get(`/production/producer/product/${productId}`)
+        return response
+    },
+
+    getProducerById : async(producerId) => {
+        const response = await axiosInstance.get(`/production/producer/${producerId}`)
+        return response
+    },
+    
+    getProductionsByProducer : async(producerId) => {
+        const response = await axiosInstance.get(`/production/${producerId}`)
+        return response
+    },
+
     getAllProducers : async() => {
         const response = await axiosInstance.get("/production/producer")
         return response
-    }
+    },
+
 }
 
 export default productionService
